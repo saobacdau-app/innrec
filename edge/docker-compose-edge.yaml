@@ -1,0 +1,61 @@
+version: '2'
+
+services:
+  sip-service:
+    image: saobacdau/innrec01:1.0.0
+    command: drachtio --contact "sip:*;transport=udp" --loglevel debug
+    container_name: sip-service
+    network_mode: "host"
+    restart: always
+    env_file:
+       - .env    
+    volumes:
+      - ${LOG_PATH}/drachtio:/var/log/drachtio/
+      - ${LOG_PATH}/drachtio/archive:/var/log/drachtio/archive
+
+  media-service:
+    image: saobacdau/innrec02:1.0.0
+    container_name: media-service
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_MODULE
+    security_opt:
+      - apparmor:unconfined
+      - seccomp:unconfined
+    command: /bin/bash -c "rtpengine --config-file=/opt/rtpengine/rtpengine.conf & rtpengine-recording -f -E --no-log-timestamps --pidfile /tmp/ngcp-rtpengine-recording-daemon.pid --config-file /opt/rtpengine/rtpengine-recording.conf --log-level-internals 0"
+    user: root
+    network_mode: "host"
+    env_file:
+       - .env    
+    environment:
+      - NOTIFI_URI=http:\/\/localhost:3000\/rec\/finished
+      - OUTPUT_MIXED=false # for BIB 
+      - OUTPUT_SINGLE=true # for BIB
+    volumes:
+      - ${DATA_FILE_PATH}:/tmp
+  
+  recording-service:
+    image: saobacdau/innrec03:1.0.0
+    command:  node src/index.js
+    restart: always
+    container_name: recording-service
+    env_file:
+       - .env    
+    environment:
+      - NODE_ENV=test
+      - DRACHTIO_HOST=127.0.0.1
+      - DRACHTIO_PORT=9022
+      - DRACHTIO_SECRET=cymru
+      - RTPENTINE_REMOTE_HOST=127.0.0.1
+      - RTPENGINE_REMOTE_PORT=22222
+      - RTPENGINE_LOCALPORT=22223
+      - RECORDING_LOG_LEVEL=debug
+      - META_DIR=/tmp/meta/
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    volumes:
+      - ${LOG_PATH}/recording:/usr/src/app/logs
+      - ${DATA_FILE_PATH}:/tmp
+      - ${DATA_FILE_PATH}/meta:/tmp/meta
+    network_mode: "host"
