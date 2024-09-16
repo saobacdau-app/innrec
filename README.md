@@ -55,8 +55,7 @@ Check Sip signal connection successfully after configuring connection point on C
 
 NODE_CORE_HOST=**10.168.40.52**
 
-
-(Options) Configure LDAP information
+(Options) Configure LDAP information\
 LDAP_URLS=ldap://a.b.c.d:389\
 LDAP_BASE="DC=sbdlab,DC=net"\
 LDAP_BIND_USER="CN=u1,CN=Users,DC=sbdlab,DC=net"\
