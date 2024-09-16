@@ -70,4 +70,16 @@ Install and start Services:
 
     docker compose -f docker-compose-core.yaml up -d
 
-Check logs start successfully
+Run the command below until it succeeds (returns HTTP/1.1 200)
+
+    curl -i http://localhost:8566/api/v1/application/reinit
+
+    HTTP/1.1 200
+    ... 
+    
+
+####  Step 4: Access the web portal address:
+
+   [https://10.168.40.52/](https://10.168.40.52/)
+
+   Default username/password: administrator/A123456@a
