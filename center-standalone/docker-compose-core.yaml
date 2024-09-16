@@ -45,7 +45,7 @@ services:
     image: saobacdau/innrec05:1.0.0
     container_name: auth-service
     restart: always
-    entrypoint: sh -c "curl -f http://localhost:8566/api/v1/application/reinit"
+    command: /bin/bash -c "curl -f http://localhost:8566/api/v1/application/reinit"
     depends_on:
       - config-service
     healthcheck:
