@@ -1,0 +1,91 @@
+version: '3'
+
+services:
+  mariadb-service:
+    image: saobacdau/innrec08:1.0.0
+    container_name: mariadb-service
+    restart: always
+    network_mode: "host"
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    user: root
+    env_file:
+       - .env
+    environment:
+      MARIADB_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: ${DATABASE_LOCAL_ROOT_PASSWORD}
+    command: 
+      /bin/sh -c "/startup.sh"
+    volumes:
+      - ${DATABASE_FILE_PATH}:/var/lib/mysql
+      #- /etc/galera.cnf:/etc/mysql/conf.d/galera.cnf
+
+  config-service:
+    image: saobacdau/innrec04:1.0.0
+    container_name: config-service
+    restart: always
+    depends_on:
+      - mariadb-service
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8566/api/v1/application/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    network_mode: "host"
+    env_file:
+       - .env
+    volumes:
+      - ${LOG_PATH}/config/:/app/logs/
+
+  auth-service:
+    image: saobacdau/innrec05:1.0.0
+    container_name: auth-service
+    restart: always
+    command: /bin/bash -c "curl -f http://localhost:8568/api/v1/application/reinit"
+    depends_on:
+      - config-service
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8568/api/v1/application/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    network_mode: "host"
+    env_file:
+       - .env 
+    volumes:
+      - ${LOG_PATH}/auth/:/app/logs/
+
+  core-service:
+    image: saobacdau/innrec06:1.0.0
+    container_name: core-service
+    restart: always
+    depends_on:
+      - config-service
+    network_mode: "host"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/api/v1/application/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    # ports:
+    #   - 8080:8080
+    #   - 6000:8011
+    env_file:
+       - .env
+    volumes:
+      - ${MEDIA_FILE_PATH}/:/tmp/recording_files/
+      - ${LOG_PATH}/core/:/app/logs/
+
+  web-portal:
+    image: saobacdau/innrec07:1.0.0
+    container_name: web-portal
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ${CERT_CRT_FILE}:/etc/nginx/conf.d/innrec.crt
+      - ${CERT_KEY_FILE}:/etc/nginx/conf.d/innrec.key
+      - ${LOG_PATH}/nginx/:/var/log/nginx/
