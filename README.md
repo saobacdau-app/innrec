@@ -3,11 +3,11 @@ This is the installation and configuration guide of INNREC system with "All In O
 
 For example the system is deployed on the server with IP **10.168.40.52**, you can replace the IP with your address.
 
-The System deployed on, Ubuntu OS:
-    Distributor ID:	Ubuntu
-    Description:	Ubuntu 20.04.1 LTS
-    Release:	20.04
-    Codename:	focal
+**The System deployed on, Ubuntu OS:**\
+    Distributor ID:	Ubuntu\
+    Description:	Ubuntu 20.04.1 LTS\
+    Release:	20.04\
+    Codename:	focal\
 
 ## 1. Install docker
 Install Docker and Docker Compose as per the instructions below
@@ -24,10 +24,10 @@ Install Docker and Docker Compose as per the instructions below
 
 ####  Step 2: Change the .env file according to your environment parameters
 
-MY_IP=**10.168.40.52**
-CORE_HOST=**10.168.40.52**
-LOG_PATH=/var/logs/innrec/
-DATA_FILE_PATH=/tmp/
+MY_IP=**10.168.40.52**\
+CORE_HOST=**10.168.40.52**\
+LOG_PATH=/var/logs/innrec/\
+DATA_FILE_PATH=/tmp/\
 TLS_IGNORE='0'
 
 ####  Step 3: Start the edge server services
@@ -57,11 +57,11 @@ NODE_CORE_HOST=**10.168.40.52**
 
 
 (Options) Configure LDAP information
-LDAP_URLS=ldap://a.b.c.d:389
-LDAP_BASE="DC=sbdlab,DC=net"
-LDAP_BIND_USER="CN=u1,CN=Users,DC=sbdlab,DC=net"
-LDAP_BIND_PASSWORD="*****"
-LDAP_user_DN_PATTERNS="mail={0},CN=users"
+LDAP_URLS=ldap://a.b.c.d:389\
+LDAP_BASE="DC=sbdlab,DC=net"\
+LDAP_BIND_USER="CN=u1,CN=Users,DC=sbdlab,DC=net"\
+LDAP_BIND_PASSWORD="*****"\
+LDAP_user_DN_PATTERNS="mail={0},CN=users"\
 LDAP_USER_SEARCH_FILTER="(mail={0})"
 
 ####  Step 3: Start the edge server services
