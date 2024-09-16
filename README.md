@@ -1,7 +1,13 @@
 # Quick Start with "All In One"
-This is the installation and configuration guide of INNREC system with "All In One" version, for trial system.
+This is the installation and configuration guide of INNREC system with "All In One" version, for trial system.\
 
 For example the system is deployed on the server with IP **10.168.40.52**, you can replace the IP with your address.
+
+The System deployed on, Ubuntu OS:
+    Distributor ID:	Ubuntu
+    Description:	Ubuntu 20.04.1 LTS
+    Release:	20.04
+    Codename:	focal
 
 ## 1. Install docker
 Install Docker and Docker Compose as per the instructions below
