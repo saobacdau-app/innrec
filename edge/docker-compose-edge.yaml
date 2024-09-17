@@ -15,9 +15,9 @@ services:
 
   media-service:
     build:
-      context: .
-      dockerfile: ./media-service/Dockerfile
-    image: saobacdau/innrec02:1.0.0
+      context: ./media-service/
+      dockerfile: ./Dockerfile
+    image: innrec02:1.0.0
     container_name: media-service
     restart: always
     cap_add:
