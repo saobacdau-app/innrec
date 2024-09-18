@@ -6,7 +6,7 @@ FROM ubuntu:20.04
 WORKDIR /opt/rtpengine
 
 RUN apt-get update 
-RUN apt-get upgrade
+#RUN apt-get upgrade
 # RUN apt-get -y dist-upgrade 
 
 
