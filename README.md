@@ -3,11 +3,13 @@ This is the installation and configuration guide of INNREC system with "All In O
 
 For example the system is deployed on the server with IP **10.168.40.52**, you can replace the IP with your address.
 
-**The System deployed on, Ubuntu OS:**\
-    Distributor ID:	Ubuntu\
-    Description:	Ubuntu 20.04.1 LTS\
-    Release:	20.04\
-    Codename:	focal\
+**The System Test on, Ubuntu OS:**
+
+Distributor ID:	Ubuntu
+Description:	Ubuntu 22.04.4 LTS
+Release:	22.04
+Codename:	jammy
+
 
 ## 1. Install docker
 Install Docker and Docker Compose as per the instructions below
@@ -17,10 +19,10 @@ Install Docker and Docker Compose as per the instructions below
 [Install Docker Compose](https://docs.docker.com/compose/install/linux/)
 
 ## 2. Configuration & Install Edge
-####  Step 1: Clone git 
+####  Step 1: Clone git, example Path: /root/
 
     git clone https://github.com/saobacdau-app/innrec.git
-    cd innrec/edge
+    cd /root/innrec/edge
 
 ####  Step 2: Change the .env file according to your environment parameters
 
@@ -33,7 +35,11 @@ TLS_IGNORE='0'
 ####  Step 3: Start the edge server services
 
 Install and start Services:
+    
+    cd /root/innrec/edge/media-service
+    docker build -t innrec02:1.0.0 .
 
+    cd /root/innrec/edge
     docker compose -f docker-compose-edge.yaml up -d
 
 Check Sip signal connection successfully after configuring connection point on CUCM:
@@ -48,8 +54,7 @@ Check Sip signal connection successfully after configuring connection point on C
 
 ####  Step 1: Clone git 
 
-    git clone https://github.com/saobacdau-app/innrec.git
-    cd innrec/center-standalone
+    cd /root/innrec/center-standalone/
 
 ####  Step 2: Change the .env file according to your environment parameters
 
